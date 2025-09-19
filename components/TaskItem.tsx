@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, TouchableOpacity, View, Switch } from "react-native";
 import { Task } from "@/types/task";
-import { TrashIcon } from "react-native-heroicons/outline";
+import { CalendarIcon, TrashIcon } from "react-native-heroicons/outline";
 
 interface TaskItemProps {
   task: Task;
@@ -11,48 +11,34 @@ interface TaskItemProps {
 
 export const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) => {
   return (
-<View
-  className={`rounded-xl p-4 mb-2 shadow backdrop-blur-sm
-    ${task.completed
-      ? "border-green-500 bg-green-800"
-      : "border-gray-300 bg-black/20"}
-  `}
->      <View className="flex-row justify-between items-center">
-        <View className="flex-1 pr-2">
-           {task?.title ? (
+    <View
+      className={`rounded-xl p-4 mb-3 shadow backdrop-blur-sm
+        ${task.completed
+          ? "border-green-500 bg-green-600/20"
+          : "border-gray-300 bg-black/20"}
+      `}
+    >
+       <View className="flex-row justify-between items-start mb-2">
+        <View className="flex-1 pr-3">
+          {task?.title ? (
             <Text
-              className={`text-lg font-semibold ${
+              className={`text-lg font-semibold mb-1 ${
                 task.completed ? "line-through text-gray-400" : "text-white"
               }`}
+              numberOfLines={1}
             >
               {task.title}
             </Text>
           ) : null}
 
           {task?.description ? (
-            <Text className="text-white">{task.description}</Text>
-          ) : null}
-
-          {task?.createdAt ? (
-            <Text className="text-white">
-              Added: {task.createdAt.toLocaleString()}
-            </Text>
-          ) : null}
-
-          {task?.startDate ? (
-            <Text className="text-white">
-              Start: {task.startDate.toLocaleString()}
-            </Text>
-          ) : null}
-
-          {task?.endDate ? (
-            <Text className="text-white">
-              End: {task.endDate.toLocaleString()}
+            <Text className="text-sm text-gray-200" numberOfLines={2}>
+              {task.description}
             </Text>
           ) : null}
         </View>
 
-         <Switch
+        <Switch
           value={task.completed}
           onValueChange={(value) => onToggle(task.id, value)}
           thumbColor={task.completed ? "#22c55e" : "#f4f3f4"}
@@ -60,12 +46,43 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) 
         />
       </View>
 
-      <TouchableOpacity
-        onPress={() => onDelete(task.id)}
-        className="mt-2 bg-red-700 p-1 rounded-lg self-end"
-      >
-        <TrashIcon size={24} color="white" />
-      </TouchableOpacity>
+       <View className="mt-3 flex-row justify-between items-end">
+         <View className="flex-col space-y-1">
+          {task?.createdAt && (
+            <View className="flex-row items-center gap-1">
+              <CalendarIcon size={16} color="white" />
+              <Text className="text-xs text-white">
+                Added: {task.createdAt.toLocaleString()}
+              </Text>
+            </View>
+          )}
+
+          {task?.startDate && (
+            <View className="flex-row items-center gap-1">
+              <CalendarIcon size={16} color="white" />
+              <Text className="text-xs text-white">
+                Start: {task.startDate.toLocaleString()}
+              </Text>
+            </View>
+          )}
+
+          {task?.endDate && (
+            <View className="flex-row items-center gap-1">
+              <CalendarIcon size={16} color="white" />
+              <Text className="text-xs text-white">
+                End: {task.endDate.toLocaleString()}
+              </Text>
+            </View>
+          )}
+        </View>
+
+        <TouchableOpacity
+          onPress={() => onDelete(task.id)}
+          className="bg-red-700 px-3 py-1 rounded-lg"
+        >
+          <TrashIcon size={18} color="white" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

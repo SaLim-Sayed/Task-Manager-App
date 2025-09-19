@@ -1,13 +1,14 @@
+import { DateRangePicker } from "@/components/DateRangePicker";
 import { useTaskStore } from "@/store/useTaskStore";
+import { dateUtils } from "@/utils/dateUtils";
 import { ImageBackground } from "expo-image";
 import { useNavigation } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Text, TextInput, TouchableOpacity, ScrollView, Platform } from "react-native";
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ArrowLeftIcon } from "react-native-heroicons/outline";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-import { DateRangePicker } from "@/components/ui/DateTimePickerComponent";
-import { dateUtils } from "@/utils/dateUtils";
  
 export default function AddTaskScreen() {
   const [title, setTitle] = useState("");
@@ -52,12 +53,19 @@ export default function AddTaskScreen() {
   return (
     <SafeAreaView edges={['left', 'right']} className="flex-1 relative">
       <StatusBar style="dark" />
+   
       <ImageBackground
         source={require("@/assets/images/bg.png")}
         style={{ flex: 1 }}
       >
+        <View className="flex-row items-center px-4 py-8 mt-10 bg-transparent gap-2">
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <ArrowLeftIcon size={24} color="white" />
+          </TouchableOpacity>
+          <Text className="text-white font-bold text-lg">Add Task</Text>
+        </View>
         <ScrollView 
-          style={{ flex: 1, padding: 16, paddingTop: 60 }}
+          style={{ flex: 1, padding: 16, paddingTop: 6 }}
           showsVerticalScrollIndicator={false}
         >
           <TextInput
@@ -79,7 +87,7 @@ export default function AddTaskScreen() {
             placeholderTextColor="#666"
           />
 
-          {Platform.OS ==="ios" && <>
+           <>
           <DateRangePicker
             startDate={startDate}
             endDate={endDate}
@@ -97,7 +105,7 @@ export default function AddTaskScreen() {
             </Text>
           </TouchableOpacity>
 
-          </>}
+          </>
           <TouchableOpacity
             onPress={handleAddTask}
             className="mt-4 bg-blue-500 p-4 rounded-lg shadow-lg"

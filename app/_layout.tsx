@@ -14,7 +14,7 @@ export default function RootLayout() {
  
   return (
      <ThemeProvider value={DefaultTheme}>
-      <Stack>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen 
           name="addTask" 
